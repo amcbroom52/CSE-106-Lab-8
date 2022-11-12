@@ -19,11 +19,11 @@ db.init_app(app)
 
 class Student(db.Model):
   id = db.Column(db.Integer, primary_key=True)
-  name = db.Column(db.String, unique=True, nullable=False)
-  grade = db.Column(db.String, unique=False, nullable=False)
-  def __init__(self, name, grade):
+  name = db.Column(db.String, nullable=False)
+  username = db.Column(db.String, unique=True, nullable=False)
+  def __init__(self, name, username):
     self.name = name
-    self.grade = grade
+    self.username = username
 
 class Course(db.Model):
   id = db.Column(db.Integer, primary_key=True)
@@ -32,6 +32,22 @@ class Course(db.Model):
   time = db.Column(db.String, nullable=False)
   maxEnrolled = db.Column(db.Integer, nullable = False)
   numEnrolled = db.Column(db.Integer)
+
+class Teacher(db.Model):
+  id = db.Column(db.Integer, primary_key=True)
+  name = db.Column(db.String, nullable=False)
+  username = db.Column(db.String, unique=True, nullable=False)
+
+class User(db.Model):
+  id = db.Column(db.Integer, primary_key=True)
+  username = db.Column(db.String, unique=True, nullable=False)
+  password = db.Column(db.String, nullable=False)
+
+class Enrollment(db.Model):
+  id = db.Column(db.Integer, primary_key=True)
+  courseId = db.Column(db.Integer, nullable=False)
+  studentId = db.Column(db.Integer, nullable=False)
+  grade = db.Column(db.Integer, nullable=False)
 
 
 
