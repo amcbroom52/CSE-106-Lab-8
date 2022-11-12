@@ -27,32 +27,36 @@ class Student(db.Model):
   id = db.Column(db.Integer, primary_key=True)
   name = db.Column(db.String, nullable=False)
   username = db.Column(db.String, unique=True)
-  def __init__(self, name, username):
-    self.name = name
-    self.username = username
+  courses = db.relationship('Enrollment', backref='Student')
+  authentication = db.relationship('User', backref='Student')
 
 class Course(db.Model):
   id = db.Column(db.Integer, primary_key=True)
   name = db.Column(db.String, unique=True, nullable=False)
-  teacher = db.Column(db.Integer, nullable=False)
+  teacher = db.Column(db.Integer, db.ForeignKey('teacher.id'), nullable=False)
   time = db.Column(db.String, nullable=False)
   maxEnrolled = db.Column(db.Integer, nullable = False)
   numEnrolled = db.Column(db.Integer)
+  students = db.relationship('Enrollment', backref='Course')
 
 class Teacher(db.Model):
   id = db.Column(db.Integer, primary_key=True)
   name = db.Column(db.String, nullable=False)
   username = db.Column(db.String, unique=True)
+  courses = db.relationship('Course', backref='Teacher')
+  authentication = db.relationship('User', backref='Teacher')
 
 class User(db.Model):
   id = db.Column(db.Integer, primary_key=True)
   username = db.Column(db.String, unique=True, nullable=False)
   password = db.Column(db.String, nullable=False)
+  studentId = db.Column(db.Integer, db.ForeignKey('student.id'), unique=True, nullable=True)
+  teacherId = db.Column(db.Integer, db.ForeignKey('teacher.id'), unique=True, nullable=True)
 
 class Enrollment(db.Model):
   id = db.Column(db.Integer, primary_key=True)
-  courseId = db.Column(db.Integer, nullable=False)
-  studentId = db.Column(db.Integer, nullable=False)
+  courseId = db.Column(db.Integer, db.ForeignKey('course.id'), nullable=False)
+  studentId = db.Column(db.Integer, db.ForeignKey('student.id'), nullable=False)
   grade = db.Column(db.Integer, nullable=False)
 
 
