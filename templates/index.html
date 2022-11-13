@@ -1,16 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
 
+<!--Login Page-->
+
 <head>
-  <title>Gradebook</title>
+  <title>Login</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
   <title>Document</title>
 </head>
 
 <body>
-
-  <h1>Gradebook</h1>
-
+  <h1>ACME University</h1>
+    <form action="{{ url_for('login')}}" method = "post" action="">
+      <div class = "login">
+        <label for="username">Username</label>
+        <input type="text" name= "username" id= "userName" placeholder="Username">
+        <br><br>
+        <label for="password">Password</label>
+        <input type="text" name="password" id="Password" placeholder="Password">
+        <br><br>
+        <button type="submit" value="submit">Sign in</button>
+      </div>
+    </form>
 </body>
 
 </html>
