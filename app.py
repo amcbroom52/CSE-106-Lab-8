@@ -6,7 +6,6 @@ from flask_admin import Admin
 from flask_admin.contrib.sqla import ModelView
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 
-
 import os
 import json
 
@@ -23,7 +22,6 @@ login_manager.login_view = 'login'
 app.secret_key = 'super secret key'
 db = SQLAlchemy(app) 
 db.init_app(app)
-
 
 class Student(db.Model):
   id = db.Column(db.Integer, primary_key=True)
@@ -76,17 +74,17 @@ def index():
 def login():
   inUsername = request.form['username']
   inPassword = request.form['password']
-  print(inUsername)
   user = User.query.filter_by(username = inUsername).first()
   print(user)
   if user is not None:
     if inPassword == user.password:
       login_user(user)
-      if user.studentId is None:
+      if current_user.studentId is None:
         return redirect(url_for('loggedinTeacher'))
-      if user.teacherId is None:
+      if current_user.teacherId is None:
         return redirect(url_for('loggedinStudent'))
   return redirect(url_for('index'))
+
 
 @app.route('/loggedinTeacher', methods = ["GET", "POST", "PUT", "DELETE"])
 @login_required
@@ -96,32 +94,34 @@ def loggedinTeacher():
   return render_template_string('''<!doctype html
   <html>
     <body>
-      <h1>Hello Professor {{current_user.username}} </h1>
+      <h1>Hello Professor {{current_user.name}} </h1>
       <a href="{{url_for('logout')}}">logout</a>
     </body>
   </html>
   ''')
+
 
 @app.route('/loggedinStudent')
 @login_required
 def loggedinStudent():
   if current_user.studentId is None:
     return redirect(url_for('index'))
-  return render_template_string('''<!doctype html
-  <html>
-    <body>
-      <h1>Hello {{current_user.username}} </h1>
-      <a href="{{url_for('logout')}}">logout</a>
-    </body>
-  </html>
-  ''')
+  classes = Course.query.all()
+  print(classes[0].Teacher.name)
+  currentStudent = Student.query.filter_by(id = current_user.Student.id).first()
+  print(currentStudent.name)
+  enrollments = Enrollment.query.filter_by(studentId = currentStudent.id)
+  courses = []
+  for item in enrollments:
+    courses.append(item.Course)
+  return render_template('student_page.html', classes=classes, courses=courses)
+
 
 @app.route('/logout')
 @login_required
 def logout():
   logout_user()
   return redirect(url_for('index'))
-
 
 
 admin.add_view(ModelView(Student, db.session))

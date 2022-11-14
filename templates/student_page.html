@@ -4,17 +4,21 @@
 <!--Student Page-->
 
 <head>
-  <title>Student Page</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-  <title>Document</title>
+    <title>Student Page</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='student.css') }}">
+    <title>Document</title>
 </head>
 
 <body>
     <div>
-        <div class="welcome"><h3>Welcome {{name}}!</h3></div>
-        <div class="title"><h3>ACME University</h3></div>
+        <div class="welcome">
+            <h3>Welcome {{name}}!</h3>
+        </div>
+        <div class="title">
+            <h3>ACME University</h3>
+        </div>
 
-        <div class="logout"> 
+        <div class="logout">
             <h3><a href="{{ url_for('logout')}}">Sign out</a></h3>
         </div>
     </div>
@@ -23,19 +27,22 @@
         <table class="table">
             <thead>
                 <tr>
-                    <th scope="col">Course Name</th><th scope="col">Teacher</th><th scope="col">Time</th><th scope="col">Students Enrolled</th>
+                    <th scope="col">Course Name</th>
+                    <th scope="col">Teacher</th>
+                    <th scope="col">Time</th>
+                    <th scope="col">Students Enrolled</th>
                 </tr>
             </thead>
             <!--Still working on grabbing data to be shown on student's dashboard-->
             {% for i in courses %}
             <tbody>
                 <tr>
-                    <td>{{course[i]}}</td>
-                    <td>{{teacher[i]}}</td>
-                    <td>{{time[i]}}</td>
-                    <td>{{enrolled[i]}}/{{capacity[i]}}</td>
+                    <td>{{i.name}}</td>
+                    <td>{{i.teacher}}</td>
+                    <td>{{i.time}}</td>
+                    <td>{{i.numEnrolled}}/{{i.maxEnrolled}}</td>
                 </tr>
-                {% end for%}
+                {% endfor%}
             </tbody>
         </table>
     </div>
@@ -44,20 +51,24 @@
         <table class="table">
             <thead>
                 <tr>
-                    <th scope="col">Course Name</th><th scope="col">Teacher</th><th scope="col">Time</th><th scope="col">Students Enrolled</th><th scope="col">Add class</th>
+                    <th scope="col">Course Name</th>
+                    <th scope="col">Teacher</th>
+                    <th scope="col">Time</th>
+                    <th scope="col">Students Enrolled</th>
+                    <th scope="col">Add class</th>
                 </tr>
             </thead>
             <!--Still working on grabbing data to be shown on student's dashboard-->
             {% for i in classes %}
             <tbody>
                 <tr>
-                    <td>{{course[i]}}</td>
-                    <td>{{teacher[i]}}</td>
-                    <td>{{time[i]}}</td>
-                    <td>{{enrolled[i]}}/{{capacity[i]}}</td>
+                    <td>{{i.name}}</td>
+                    <td>{{i.Teacher.name}}</td>
+                    <td>{{i.time}}</td>
+                    <td>{{i.numEnrolled}}/{{i.maxEnrolled}}</td>
                     <td><button>+</button></td>
                 </tr>
-                {% end for%}
+                {% endfor%}
             </tbody>
         </table>
     </div>
