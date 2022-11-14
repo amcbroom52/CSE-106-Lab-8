@@ -88,7 +88,7 @@ def login():
         return redirect(url_for('loggedinStudent'))
   return redirect(url_for('index'))
 
-@app.route('/loggedinTeacher')
+@app.route('/loggedinTeacher', methods = ["GET", "POST", "PUT", "DELETE"])
 @login_required
 def loggedinTeacher():
   if current_user.teacherId is None:
