@@ -1,11 +1,10 @@
 from enum import unique
-from flask import Flask
-from flask import request
-from flask import abort, render_template
+from flask import Flask, request, abort, render_template, redirect, url_for, render_template_string
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 from flask_admin import Admin 
 from flask_admin.contrib.sqla import ModelView
+from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 
 
 import os
@@ -18,6 +17,9 @@ CORS(app)
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///database.sqlite" 
 app.config['FLASK_ADMIN_SWATCH'] = 'cerulean'
 admin = Admin(app, name='microblog', template_mode='bootstrap3') 
+login_manager = LoginManager() 
+login_manager.init_app(app) 
+login_manager.login_view = 'login'
 app.secret_key = 'super secret key'
 db = SQLAlchemy(app) 
 db.init_app(app)
@@ -46,7 +48,7 @@ class Teacher(db.Model):
   courses = db.relationship('Course', backref='Teacher')
   authentication = db.relationship('User', backref='Teacher')
 
-class User(db.Model):
+class User(db.Model, UserMixin):
   id = db.Column(db.Integer, primary_key=True)
   username = db.Column(db.String, unique=True, nullable=False)
   password = db.Column(db.String, nullable=False)
@@ -60,12 +62,65 @@ class Enrollment(db.Model):
   grade = db.Column(db.Integer, nullable=False)
 
 
+@login_manager.user_loader 
+def load_user(user_id): 
+  return User.query.get(int(user_id)) 
 
 
 @app.route('/')
 def index():
     return render_template('index.html')
 
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+  inUsername = request.form['username']
+  inPassword = request.form['password']
+  print(inUsername)
+  user = User.query.filter_by(username = inUsername).first()
+  print(user)
+  if user is not None:
+    if inPassword == user.password:
+      login_user(user)
+      if user.studentId is None:
+        return redirect(url_for('loggedinTeacher'))
+      if user.teacherId is None:
+        return redirect(url_for('loggedinStudent'))
+  return redirect(url_for('index'))
+
+@app.route('/loggedinTeacher')
+@login_required
+def loggedinTeacher():
+  if current_user.teacherId is None:
+    return redirect(url_for('index'))
+  return render_template_string('''<!doctype html
+  <html>
+    <body>
+      <h1>Hello Professor {{current_user.username}} </h1>
+      <a href="{{url_for('logout')}}">logout</a>
+    </body>
+  </html>
+  ''')
+
+@app.route('/loggedinStudent')
+@login_required
+def loggedinStudent():
+  if current_user.studentId is None:
+    return redirect(url_for('index'))
+  return render_template_string('''<!doctype html
+  <html>
+    <body>
+      <h1>Hello {{current_user.username}} </h1>
+      <a href="{{url_for('logout')}}">logout</a>
+    </body>
+  </html>
+  ''')
+
+@app.route('/logout')
+@login_required
+def logout():
+  logout_user()
+  return redirect(url_for('index'))
 
 
 
@@ -77,4 +132,3 @@ admin.add_view(ModelView(Enrollment, db.session))
 
 if __name__ == '__main__':
   app.run()
-
