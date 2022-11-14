@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!--Student Page-->
+
+<head>
+  <title>Student Page</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <title>Document</title>
+</head>
+
+<body>
+    <div>
+        <div class="welcome"><h3>Welcome {{name}}!</h3></div>
+        <div class="title"><h3>ACME University</h3></div>
+
+        <div class="logout"> 
+            <h3><a href="{{ url_for('logout')}}">Sign out</a></h3>
+        </div>
+    </div>
+
+    <div id="your_courses" class="course_content">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Course Name</th><th scope="col">Teacher</th><th scope="col">Time</th><th scope="col">Students Enrolled</th>
+                </tr>
+            </thead>
+            <!--Still working on grabbing data to be shown on student's dashboard-->
+            {% for i in courses %}
+            <tbody>
+                <tr>
+                    <td>{{course[i]}}</td>
+                    <td>{{teacher[i]}}</td>
+                    <td>{{time[i]}}</td>
+                    <td>{{enrolled[i]}}/{{capacity[i]}}</td>
+                </tr>
+                {% end for%}
+            </tbody>
+        </table>
+    </div>
+
+    <div id="add_courses" class="addcourse_content">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Course Name</th><th scope="col">Teacher</th><th scope="col">Time</th><th scope="col">Students Enrolled</th><th scope="col">Add class</th>
+                </tr>
+            </thead>
+            <!--Still working on grabbing data to be shown on student's dashboard-->
+            {% for i in classes %}
+            <tbody>
+                <tr>
+                    <td>{{course[i]}}</td>
+                    <td>{{teacher[i]}}</td>
+                    <td>{{time[i]}}</td>
+                    <td>{{enrolled[i]}}/{{capacity[i]}}</td>
+                    <td><button>+</button></td>
+                </tr>
+                {% end for%}
+            </tbody>
+        </table>
+    </div>
+</body>
+
+
+</html>
