@@ -75,7 +75,6 @@ def login():
   inUsername = request.form['username']
   inPassword = request.form['password']
   user = User.query.filter_by(username = inUsername).first()
-  print(user)
   if user is not None:
     if inPassword == user.password:
       login_user(user)
@@ -107,9 +106,7 @@ def loggedinStudent():
   if current_user.studentId is None:
     return redirect(url_for('index'))
   classes = Course.query.all()
-  print(classes[0].Teacher.name)
   currentStudent = Student.query.filter_by(id = current_user.Student.id).first()
-  print(currentStudent.name)
   enrollments = Enrollment.query.filter_by(studentId = currentStudent.id)
   courses = []
   for item in enrollments:
