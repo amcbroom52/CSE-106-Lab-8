@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!--Teacher Page-->
+
+<head>
+  <title>Professor</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <title>Document</title>
+</head>
+
+<body>
+    <nav>
+        <ul> 
+            <li>
+                Welcome { { name } }!
+            </li>
+            <li> 
+                <h1>ACME University</h1>
+            </li>
+            <li> 
+                <h3><a href="{{ /logout }}">Sign out</a></h3>
+            </li>
+        </ul>
+    </nav>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Course Name</th>
+                <th scope="col">Teacher</th>
+                <th scope="col">Time</th>
+                <th scope="col">Students Enrolled</th>
+            </tr>
+        </thead>
+
+
+        {% for i in courses %}
+        <tbody>
+            <tr>
+                <td><a href="class.html"> {{i.name}}</td>
+                <td>{{i.teacher}}</td>
+                <td>{{i.time}}</td>
+                <td>{{i.numEnrolled}}/{{i.maxEnrolled}}</td>
+            </tr>
+            {% endfor%}
+        </tbody>
+</table>
+
+</body>
+
+
+</html>
