@@ -158,7 +158,7 @@ def loggedinStudent():
             listCourses.append(course.courseId)
 
         student_classes = Course.query.filter(Course.id.in_(listCourses))
-        return render_template('student-view.html', courses=student_classes, all_courses=all_courses)
+        return render_template('student_page.html', courses=student_classes, all_courses=all_courses)
     if request.method == "POST":
         data = request.get_json()
         course = Course.query.filter_by(name=data["course_name"]).first()
