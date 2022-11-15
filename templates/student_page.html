@@ -24,13 +24,11 @@
         </div>
     </div>
     <ul class="tabs">
-        <li data-tab-target="your_courses" class="active tab">Your Courses</li>
-        <li data-tab-target="add_courses" class="tab">Add Courses</li>
+        <li data-tab-target="#your_courses" class="active tab">Your Courses</li>
+        <li data-tab-target="#add_courses" class="tab">Add Courses</li>
     </ul>
     <div class="tab-content">
-        <p>
-        <div id="your_courses" class="course_content" data-tab-content>
-            <h1>Your Courses</h1>
+        <div id="your_courses" data-tab-content class="active" class="course_content">
             <table class="table">
                 <thead>
                     <tr>
@@ -40,7 +38,6 @@
                         <th scope="col">Students Enrolled</th>
                     </tr>
                 </thead>
-                <!--Still working on grabbing data to be shown on student's dashboard-->
                 {% for i in courses %}
                 <tbody>
                     <tr>
@@ -52,12 +49,10 @@
                     {% endfor%}
                 </tbody>
             </table>
-            </p>
         </div>
 
-        <div id="add_courses" class="addcourse_content" data-tab-content class="active">
-            <h1>Add Courses</h1>
-            <p>
+        <div id="add_courses" class="addcourse_content" data-tab-content>
+            <h2>Please refresh to redirect to your courses</h2>
             <table class="table">
                 <thead>
                     <tr>
@@ -68,7 +63,6 @@
                         <th scope="col">Add class</th>
                     </tr>
                 </thead>
-                <!--Still working on grabbing data to be shown on student's dashboard-->
                 {% for i in classes %}
                 <tbody>
                     <tr>
@@ -81,7 +75,6 @@
                     {% endfor%}
                 </tbody>
             </table>
-            </p>
         </div>
     </div>
 </body>
