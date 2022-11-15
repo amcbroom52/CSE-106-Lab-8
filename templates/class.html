@@ -12,14 +12,22 @@
 <body>
     <nav>
         <ul> 
-            <li>
-                Welcome { { name } }!
-            </li>
             <li> 
                 <h1>ACME University</h1>
             </li>
             <li> 
-                <h3><a href="{{ /logout }}">Sign out</a></h3>
+                <h3><a href="{{url_for('logout')}}">Sign out</a></h3>
+            </li>
+            <li>
+                <h3><a href="{{url_for('back')}}" >Back</a></h3>
+            </li>
+            <li>
+                <form action="{{url_for('changeGrade')}}" method="POST">
+                    <input type="hidden" name="course" value="{{classId}}">
+                    <input type="text" name="studentId" placeholder="Student ID">
+                    <input type="text" name="studentGrade" placeholder="New Grade">
+                    <input type="submit" value="submit">
+                </form>
             </li>
         </ul>
     </nav>
@@ -27,8 +35,11 @@
     <table class="table">
         <thead>
             <tr>
+                <th scope="col">Student ID</th>
                 <th scope="col">Student</th>
+                <th scope="col"> </th>
                 <th scope="col">Grade</th>
+                <th scope="col"> </th>
             </tr>
         </thead>
 
@@ -36,8 +47,11 @@
         {% for i in students %}
         <tbody>
             <tr>
-                <td>{{i.student}}</td>
+                <td>{{i.Student.id}}</td>
+                <td>{{i.Student.name}}</td>
+                <td><a href="{{url_for('decreaseGrade', studentId = i.Student.id, courseId = classId)}}"><button>-</button></a></td>
                 <td>{{i.grade}}</td>
+                <td><a href="{{url_for('increaseGrade', studentId = i.Student.id, courseId = classId)}}"><button>+</button></a></td>
             </tr>
         {% endfor%}
         

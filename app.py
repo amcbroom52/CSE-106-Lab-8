@@ -82,15 +82,76 @@ def login():
   return redirect(url_for('index'))
 
 
-# @app.route('/loggedinTeacher', methods=["GET"])
-# @login_required
-# def loggedinTeacher():
-#     if current_user.teacherId is None:
-#         return redirect(url_for('index'))
+@app.route('/loggedinTeacher', methods=["GET"])
+@login_required
+def loggedinTeacher():
+    if current_user.teacherId is None:
+        return redirect(url_for('index'))
+    current_teacher_courses = Course.query.filter_by(teacher=current_user.teacherId)
+    return render_template('teacher_page.html', courses=current_teacher_courses)
 
-#     current_teacher_courses = Course.query.filter_by(teacher=current_user.teacherId)
-#     return render_template('teacher-classes.html', courses=current_teacher_courses)
 
+@app.route('/classPage/<int:classId>')
+@login_required
+def classPage(classId):
+  if current_user.teacherId is None:
+        return redirect(url_for('index'))
+  # course = Course.query.filter_by(id = classId)
+  students = Enrollment.query.filter_by(courseId = classId)
+  return render_template('class.html', students = students, classId = classId)
+
+@app.route('/changeGrade', methods=["GET", "POST"])
+@login_required
+def changeGrade():
+  if current_user.teacherId is None:
+        return redirect(url_for('index'))
+  studentID = request.form['studentId']
+  course = request.form['course']
+  studentGrade = request.form['studentGrade']
+  enroll = Enrollment.query.filter_by(studentId = studentID, courseId = course).first()
+  enroll.grade = studentGrade
+  db.session.commit()
+  return redirect(url_for('classPage', classId=course))
+
+@app.route('/decreaseGrade/<studentId>/<courseId>')
+@login_required
+def decreaseGrade(studentId, courseId):
+  if current_user.teacherId is None:
+    return redirect(url_for('index'))
+  enroll = Enrollment.query.filter_by(studentId = studentId, courseId = courseId).first()
+  enroll.grade -= 1
+  print(studentId)
+  print(courseId)
+  print(enroll)
+  db.session.commit()
+  return redirect(url_for('classPage', classId=courseId))
+
+@app.route('/increaseGrade/<studentId>/<courseId>')
+@login_required
+def increaseGrade(studentId, courseId):
+  if current_user.teacherId is None:
+    return redirect(url_for('index'))
+  enroll = Enrollment.query.filter_by(studentId = studentId, courseId = courseId).first()
+  enroll.grade += 1
+  print(studentId)
+  print(courseId)
+  print(enroll)
+  db.session.commit()
+  return redirect(url_for('classPage', classId=courseId))
+
+@app.route('/back')
+@login_required
+def back():
+  if current_user.teacherId is None:
+    return redirect(url_for('index'))
+  return redirect(url_for('loggedinTeacher'))
+
+  
+  # studentGrade = request.form['studentGrade']
+  # student = Student.query.filter_by(id = studentID).first()
+  # if student is None:
+  #   return 0
+  # enroll = Enrollment.query.filter_by(studentId = studentID, )
 
 # @app.route("/teacher/<course_name>", methods=['GET', 'PUT'])
 # @login_required
@@ -134,7 +195,6 @@ def login():
 #         return render_template('teacher-class-details.html', name=course_name, students=listStudentNames, grades=grades,
 #                                length=length)
 
-
 @app.route('/loggedinStudent')
 @login_required
 def loggedinStudent():
@@ -148,26 +208,19 @@ def loggedinStudent():
     courses.append(item.Course)
   return render_template('student_page.html', classes=classes, courses=courses)
 
-
-@app.route('/addClass/<classId>', methods=['GET', 'POST'])
+@app.route('/addClass/<int:classId>', methods=['GET', 'POST'])
 @login_required
 def addClass(classId):
-  # classId = request.form['courseid']
-  # print(classId)
-  course = Course.query.filter_by(name = classId).first()
-  if Enrollment.query.filter_by(studentId = current_user.Student.id, courseId = course.id).first() is not None:
+  print(classId)
+  course = Course.query.filter_by(id = classId).first()
+  print(course)
+  if Enrollment.query.filter_by(studentId = current_user.Student.id, courseId = course.id).first() is not None or course.numEnrolled == course.maxEnrolled:
     return redirect(url_for('loggedinStudent'))
-  enroll = Enrollment(courseId 
-  = course.id, studentId = current_user.Student.id, grade = 100)
+  enroll = Enrollment(courseId = course.id, studentId = current_user.Student.id, grade = 100)
+  course.numEnrolled += 1
   db.session.add(enroll)
   db.session.commit()
   return redirect(url_for('loggedinStudent'))
-  # enrollments = Enrollment.query.filter_by(studentId = current_user.Student.id)
-  # enrolledCourses = []
-  # for item in enrollments:
-  #   enrolledCourses.append(item.Course)
-  # if
-  # if course in current_user.
 
 
 
@@ -178,7 +231,6 @@ def logout():
     logout_user()
     return redirect(url_for('index'))
 
-
 admin.add_view(ModelView(Student, db.session))
 admin.add_view(ModelView(Course, db.session))
 admin.add_view(ModelView(Teacher, db.session))
@@ -187,3 +239,5 @@ admin.add_view(ModelView(Enrollment, db.session))
 
 if __name__ == '__main__':
     app.run(debug=True)
+
+

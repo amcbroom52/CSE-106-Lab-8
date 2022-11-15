@@ -13,13 +13,13 @@
     <nav>
         <ul> 
             <li>
-                Welcome { { name } }!
+                Welcome {{ current_user.Teacher.name }}!
             </li>
             <li> 
                 <h1>ACME University</h1>
             </li>
             <li> 
-                <h3><a href="{{ /logout }}">Sign out</a></h3>
+                <h3><a href="{{ url_for('logout') }}">Sign out</a></h3>
             </li>
         </ul>
     </nav>
@@ -38,8 +38,8 @@
         {% for i in courses %}
         <tbody>
             <tr>
-                <td><a href="class.html"> {{i.name}}</td>
-                <td>{{i.teacher}}</td>
+                <td><a href="{{url_for('classPage', classId=i.id)}}"> {{i.name}}</td>
+                <td>{{i.Teacher.name}}</td>
                 <td>{{i.time}}</td>
                 <td>{{i.numEnrolled}}/{{i.maxEnrolled}}</td>
             </tr>
