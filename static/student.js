@@ -1,7 +1,7 @@
 // Used for Student/Teacher/Admin Page functions
 
 // Tabs
-const tags = document.querySelectorAll('[data-tab-target]')
+const tabs = document.querySelectorAll('[data-tab-target]')
 const tabsContent = document.querySelectorAll('[data-tab-content]') // Contains tabs content
 
 // Loop through tabs
@@ -15,11 +15,8 @@ tabs.forEach(tab =>{
             tabsContent.classList.remove('active')
         
         })
-        // Display specific tab target when clicked  
-        target.classList.add('active')
-
         // Loop over all over tab 
-        tabsContent.forEach(tab => {
+        tabs.forEach(tab => {
             tab.classList.remove('active')
         
         })
@@ -28,8 +25,6 @@ tabs.forEach(tab =>{
         target.classList.add('active')
     })
 })
-
-
 
 // Add
 // Remove 
