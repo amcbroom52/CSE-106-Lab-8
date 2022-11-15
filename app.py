@@ -96,7 +96,6 @@ def loggedinTeacher():
 def classPage(classId):
   if current_user.teacherId is None:
         return redirect(url_for('index'))
-  # course = Course.query.filter_by(id = classId)
   students = Enrollment.query.filter_by(courseId = classId)
   return render_template('class.html', students = students, classId = classId)
 
@@ -146,55 +145,6 @@ def back():
     return redirect(url_for('index'))
   return redirect(url_for('loggedinTeacher'))
 
-  
-  # studentGrade = request.form['studentGrade']
-  # student = Student.query.filter_by(id = studentID).first()
-  # if student is None:
-  #   return 0
-  # enroll = Enrollment.query.filter_by(studentId = studentID, )
-
-# @app.route("/teacher/<course_name>", methods=['GET', 'PUT'])
-# @login_required
-# def teacher_edit(course_name):
-#     if current_user.teacherId is None:
-#         return redirect(url_for('index'))
-#     if request.method == "PUT":
-#         data = request.get_json()
-#         print(data)
-#         student = Student.query.filter_by(name=data["name"]).first()
-#         if student != None:
-#             course = Course.query.filter_by(name=course_name).first()
-#             enroll = Enrollment.query.filter_by(studentId=student.id, courseId=course.id).first()
-#             if enroll != None:
-#                 enroll.grade = data["grade"]
-#                 db.session.commit()
-#                 return "success"
-
-#     if request.method == 'GET':
-#         listStudentIds = []
-#         listStudentNames = []
-
-#         grades = []
-
-#         course = Course.query.filter_by(name=course_name).first()
-
-#         listEnrolled = Enrollment.query.filter_by(courseId=course.id).order_by(Enrollment.studentId)
-#         # Acquire grades
-#         for user in listEnrolled:
-#             grades.append(user.grade)
-#         # Acquire Student Ids
-#         for enrolled in listEnrolled:
-#             listStudentIds.append(enrolled.studentId)
-
-#         enrolled_users = Student.query.filter(Student.id.in_(listStudentIds))
-#         # Acquire Student name
-#         for names in enrolled_users:
-#             listStudentNames.append(names.name)
-#         length = len(listStudentIds)
-
-#         return render_template('teacher-class-details.html', name=course_name, students=listStudentNames, grades=grades,
-#                                length=length)
-
 @app.route('/loggedinStudent')
 @login_required
 def loggedinStudent():
@@ -221,9 +171,6 @@ def addClass(classId):
   db.session.add(enroll)
   db.session.commit()
   return redirect(url_for('loggedinStudent'))
-
-
-
 
 @app.route('/logout')
 @login_required

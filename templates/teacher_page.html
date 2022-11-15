@@ -4,21 +4,21 @@
 <!--Teacher Page-->
 
 <head>
-  <title>Professor</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-  <title>Document</title>
+    <title>Professor</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>Document</title>
 </head>
 
 <body>
     <nav>
-        <ul> 
+        <ul>
             <li>
                 Welcome {{ current_user.Teacher.name }}!
             </li>
-            <li> 
+            <li>
                 <h1>ACME University</h1>
             </li>
-            <li> 
+            <li>
                 <h3><a href="{{ url_for('logout') }}">Sign out</a></h3>
             </li>
         </ul>
@@ -46,7 +46,7 @@
             </tr>
             {% endfor%}
         </tbody>
-</table>
+    </table>
 
 </body>
 

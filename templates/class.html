@@ -4,22 +4,22 @@
 <!--Teacher Page-->
 
 <head>
-  <title>Professor</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-  <title>Document</title>
+    <title>Professor</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>Document</title>
 </head>
 
 <body>
     <nav>
-        <ul> 
-            <li> 
+        <ul>
+            <li>
                 <h1>ACME University</h1>
             </li>
-            <li> 
+            <li>
                 <h3><a href="{{url_for('logout')}}">Sign out</a></h3>
             </li>
             <li>
-                <h3><a href="{{url_for('back')}}" >Back</a></h3>
+                <h3><a href="{{url_for('back')}}">Back</a></h3>
             </li>
             <li>
                 <form action="{{url_for('changeGrade')}}" method="POST">
@@ -49,14 +49,18 @@
             <tr>
                 <td>{{i.Student.id}}</td>
                 <td>{{i.Student.name}}</td>
-                <td><a href="{{url_for('decreaseGrade', studentId = i.Student.id, courseId = classId)}}"><button>-</button></a></td>
+                <td><a
+                        href="{{url_for('decreaseGrade', studentId = i.Student.id, courseId = classId)}}"><button>-</button></a>
+                </td>
                 <td>{{i.grade}}</td>
-                <td><a href="{{url_for('increaseGrade', studentId = i.Student.id, courseId = classId)}}"><button>+</button></a></td>
+                <td><a
+                        href="{{url_for('increaseGrade', studentId = i.Student.id, courseId = classId)}}"><button>+</button></a>
+                </td>
             </tr>
-        {% endfor%}
-        
+            {% endfor%}
+
         </tbody>
-</table>
+    </table>
 
 </body>
 
