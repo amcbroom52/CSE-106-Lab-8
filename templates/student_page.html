@@ -22,58 +22,58 @@
             <h3><a href="{{ url_for('logout')}}">Sign out</a></h3>
         </div>
     </div>
-    <ul class="tabs">
-        <li data-tab-target="#your_courses" class="active tab">Your Courses</li>
-        <li data-tab-target="#add_courses" class="tab">Add Courses</li>
-    </ul>
-    <div class="tab-content">
-        <div id="your_courses" data-tab-content class="active" class="course_content">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th scope="col">Course Name</th>
-                        <th scope="col">Teacher</th>
-                        <th scope="col">Time</th>
-                        <th scope="col">Students Enrolled</th>
-                    </tr>
-                </thead>
-                {% for i in courses %}
-                <tbody>
-                    <tr>
-                        <td>{{i.name}}</td>
-                        <td>{{i.teacher}}</td>
-                        <td>{{i.time}}</td>
-                        <td>{{i.numEnrolled}}/{{i.maxEnrolled}}</td>
-                    </tr>
-                    {% endfor%}
-                </tbody>
-            </table>
-        </div>
 
-        <div id="add_courses" class="addcourse_content" data-tab-content>
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th scope="col">Course Name</th>
-                        <th scope="col">Teacher</th>
-                        <th scope="col">Time</th>
-                        <th scope="col">Students Enrolled</th>
-                        <th scope="col">Add class</th>
-                    </tr>
-                </thead>
-                {% for i in classes %}
-                <tbody>
-                    <tr>
-                        <td>{{i.name}}</td>
-                        <td>{{i.Teacher.name}}</td>
-                        <td>{{i.time}}</td>
-                        <td>{{i.numEnrolled}}/{{i.maxEnrolled}}</td>
-                        <td><button>+</button></td>
-                    </tr>
-                    {% endfor%}
-                </tbody>
-            </table>
-        </div>
+    <div id="your_courses" class="course_content">
+        <h3>Your Courses</h3>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Course Name</th>
+                    <th scope="col">Teacher</th>
+                    <th scope="col">Time</th>
+                    <th scope="col">Students Enrolled</th>
+                </tr>
+            </thead>
+            <!--Still working on grabbing data to be shown on student's dashboard-->
+            {% for i in courses %}
+            <tbody>
+                <tr>
+                    <td>{{i.name}}</td>
+                    <td>{{i.teacher}}</td>
+                    <td>{{i.time}}</td>
+                    <td>{{i.numEnrolled}}/{{i.maxEnrolled}}</td>
+                </tr>
+                {% endfor%}
+            </tbody>
+        </table>
+    </div>
+
+    <div id="add_courses" class="addcourse_content">
+        <h3>All Courses</h3>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Course Name</th>
+                    <th scope="col">Teacher</th>
+                    <th scope="col">Time</th>
+                    <th scope="col">Students Enrolled</th>
+                    <th scope="col">Add class</th>
+                </tr>
+            </thead>
+            <!--Still working on grabbing data to be shown on student's dashboard-->
+            {% for i in classes %}
+            <tbody>
+                <tr>
+                    <input type="hidden" name="courseid" value="{{ i.name }}" />
+                    <td>{{i.name}}</a></td>
+                    <td>{{i.Teacher.name}}</td>
+                    <td>{{i.time}}</td>
+                    <td>{{i.numEnrolled}}/{{i.maxEnrolled}}</td>
+                    <td><a href="{{url_for('addClass', classId=i.id)}}"><button>+</button></a></td>
+                </tr>
+                {% endfor%}
+            </tbody>
+        </table>
     </div>
 </body>
 
